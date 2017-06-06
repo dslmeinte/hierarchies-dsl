@@ -1,0 +1,53 @@
+grammar com.dslconsultancy.hierarchies.HierarchyDsl with org.eclipse.xtext.common.Terminals
+
+generate hierarchyDsl "http://www.dslconsultancy.com/hierarchies/HierarchyDsl"
+
+
+DefinitionFile:
+	'destination' path=STRING
+	hierarchies += Hierarchy*
+	;
+
+
+Hierarchy:
+	'hierarchy' name=ID (asPostfix ?= 'as-postfix')? '{'
+		baseProperties += Property*
+		subTypes += SubType*
+	'}'
+	;
+
+	
+SubType:
+	(abstract ?= 'abstract')? name=ID ('<' superType=[SubType])? '{'
+		properties += Property*
+	'}'
+	;
+
+
+Property:
+	name=ID ':' type=Type
+	;
+
+
+Type:
+	PrimitiveType | ReferableTypeReference | MapType
+	;
+
+PrimitiveType:
+	primitiveType=PrimitiveTypes	
+	;
+
+enum PrimitiveTypes:
+	string | boolean | date
+	;
+
+ReferableType: Hierarchy | SubType;
+
+ReferableTypeReference:
+	(asPartial ?= 'partial')? referableType=[ReferableType]
+	;
+
+MapType:
+	keyName=ID '->' valueType=Type
+	;
+

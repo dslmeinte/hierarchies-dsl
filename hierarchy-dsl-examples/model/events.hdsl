@@ -1,0 +1,36 @@
+destination "events"
+
+hierarchy event as-postfix {
+
+    timestamp: date
+
+    identityAddedToGroup {
+        groupId: string
+        memberId: string
+    }
+
+    abstract identityCreated {
+        name: string
+    }
+
+    emailAddressConfirmed {
+        userId: string
+    }
+
+    groupCreated {}
+
+    identityUpdated {
+        id: string
+        data: partial identity
+    }
+
+    userAuthenticated {
+        userId: string
+    }
+
+    userCreated {
+        emailAddress: string
+        encryptedPassword: string
+    }
+
+}
