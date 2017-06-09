@@ -10,6 +10,7 @@ hierarchy event as-postfix {
     }
 
     abstract identityCreated {
+        id: string
         name: string
     }
 
@@ -17,7 +18,7 @@ hierarchy event as-postfix {
         userId: string
     }
 
-    groupCreated {}
+    groupCreated < identityCreated {}
 
     identityUpdated {
         id: string
@@ -28,7 +29,7 @@ hierarchy event as-postfix {
         userId: string
     }
 
-    userCreated {
+    userCreated < identityCreated {
         emailAddress: string
         encryptedPassword: string
     }
