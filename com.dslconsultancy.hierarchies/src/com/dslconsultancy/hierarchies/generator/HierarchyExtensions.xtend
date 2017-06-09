@@ -13,6 +13,23 @@ class HierarchyExtensions {
 		subTypes.filter[!abstract]	
 	}
 
+	def definitionFile(Hierarchy hierarchy) {
+		EcoreUtil2.getContainerOfType(hierarchy, DefinitionFile)
+	}
+
+	def discriminatorPropertyName(Hierarchy it) {
+		'''«name.toFirstLower»Type'''
+	}
+
+	def discriminatorTypeName(Hierarchy it) {
+		'''«name.toFirstUpper»Type'''		
+	}
+
+	def typeName(Hierarchy it) {
+		name.toFirstUpper
+	}
+
+
 	def hierarchy(SubType it) {
 		eContainer as Hierarchy
 	}
@@ -21,6 +38,11 @@ class HierarchyExtensions {
 		name.toFirstUpper + if (hierarchy.asPostfix) hierarchy.name.toFirstUpper else ""
 	}
 
+	def discriminatorPropertyValue(SubType it) {
+		name.toFirstLower
+	}
+
+
 	def postfixedName(ReferableType it) {
 		switch it {
 			Hierarchy: name.toFirstUpper
@@ -28,16 +50,17 @@ class HierarchyExtensions {
 		}		
 	}
 
-	def referencedExternalHierarchies(DefinitionFile definitionFile) {
+
+	private def referencedHierarchies(DefinitionFile thisFile) {
 		EcoreUtil2
-			.eAllOfType(definitionFile, ReferableTypeReference)
+			.eAllOfType(thisFile, ReferableTypeReference)
 			.map[referableType]
 			.filter(Hierarchy)
-			.filter[eResource !== definitionFile.eResource]
 	}
 
-	def definitionFile(Hierarchy hierarchy) {
-		EcoreUtil2.getContainerOfType(hierarchy, DefinitionFile)
+	def referencedExternalHierarchies(DefinitionFile thisFile) {
+		thisFile.referencedHierarchies
+			.filter[eResource !== thisFile.eResource]
 	}
 
 }

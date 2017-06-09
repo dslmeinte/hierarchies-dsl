@@ -18,7 +18,9 @@ import org.eclipse.xtext.generator.IGeneratorContext
 class HierarchyDslGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		resource.allContents.filter(DefinitionFile).forEach[ fsa.generateFile(path + ".ts", generateTypeScript) ]
+		resource.allContents.filter(DefinitionFile).forEach[
+			fsa.generateFile(path + ".ts", generateTypeScript.toString.replace("\t", "    "))
+		]
 	}
 
 
@@ -42,30 +44,32 @@ class HierarchyDslGenerator extends AbstractGenerator {
 
 	'''
 
+
 	private def generateTypeScript(Hierarchy it)
 	'''
-	export type «name.toFirstUpper»Type = «concreteSubTypes.map['''"«name.toFirstLower»"'''].join(" | ")»;
+	export type «discriminatorTypeName» = «concreteSubTypes.sortBy[name].map['''"«discriminatorPropertyValue»"'''].join(" | ")»;
 
-	export type «name.toFirstUpper» = «concreteSubTypes.map['''I«postfixedName»'''].join(" | ")»;
+	export type «typeName» = «concreteSubTypes.map['''I«postfixedName»'''].join(" | ")»;
 
-	export /* abstract */ interface I«name.toFirstUpper» {
-		«name.toFirstLower»Type: «name.toFirstUpper»Type;
+	export /* abstract */ interface I«typeName» {
+		«discriminatorPropertyName»: «discriminatorTypeName»;
 		«FOR property : baseProperties»
 			«property.generateTypeScript»
 		«ENDFOR»
 	}
 
-	«FOR it : subTypes»
+	«FOR it : subTypes.sortBy[name]»
 		«generateTypeScript»
 
 	«ENDFOR»
 	'''
 
+
 	private def generateTypeScript(SubType it)
 	'''
-	export «IF abstract»/* abstract */ «ENDIF»interface I«postfixedName» extends I«IF superType === null»«hierarchy.name.toFirstUpper»«ELSE»«superType.postfixedName»«ENDIF» {
+	export «IF abstract»/* abstract */ «ENDIF»interface I«postfixedName» extends I«IF superType === null»«hierarchy.typeName»«ELSE»«superType.postfixedName»«ENDIF» {
 		«IF !abstract»
-			«name.toFirstLower»Type: "«name.toFirstLower»";
+			«hierarchy.discriminatorPropertyName»: "«discriminatorPropertyValue»";
 		«ENDIF»
 		«FOR property : properties»
 			«property.generateTypeScript»
@@ -73,10 +77,12 @@ class HierarchyDslGenerator extends AbstractGenerator {
 	}
 	'''
 
+
 	private def generateTypeScript(Property it)
 	'''
 	«name»: «type.generateTypeScript»;
 	'''
+
 
 	private def CharSequence generateTypeScript(Type it) {
 		switch it {
