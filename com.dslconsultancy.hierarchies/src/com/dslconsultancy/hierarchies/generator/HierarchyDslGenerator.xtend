@@ -12,11 +12,18 @@ class HierarchyDslGenerator extends AbstractGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		resource.allContents.filter(DefinitionFile).forEach[
 			fsa.generateFile(path + ".ts", asTypeScript.toString.replace("\t", "    "))
+			fsa.generateFile(path + ".json", asJson.prettyPrint)
 		]
 	}
 
 
 	@Inject
 	extension TypeScriptTemplates
+
+	@Inject
+	extension JsonTemplates
+
+	@Inject
+	extension JsonUtil
 
 }

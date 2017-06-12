@@ -27,3 +27,7 @@ Export-Package: com.dslconsultancy.hierarchies,
  com.dslconsultancy.hierarchies.serializer,
  com.dslconsultancy.hierarchies.scoping
 Import-Package: org.apache.log4j
+Bundle-ClassPath: lib/jackson-annotations-2.8.8.jar,
+ lib/jackson-core-2.8.8.jar,
+ lib/jackson-databind-2.8.8.jar,
+ .
