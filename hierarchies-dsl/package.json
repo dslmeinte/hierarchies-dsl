@@ -1,0 +1,14 @@
+{
+  "name": "hierarchies-dsl",
+  "version": "0.0.1",
+  "description": "A DSL to define hierarchies through tagged union types in TypeScript.",
+  "main": "index.js",
+  "author": "Meinte Boersma",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^2.3.4"
+  }
+}

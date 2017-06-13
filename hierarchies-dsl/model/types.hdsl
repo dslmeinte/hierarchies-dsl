@@ -1,0 +1,34 @@
+destination "types"
+
+hierarchy Type as-postfix {
+
+    primitiveType {
+        primitiveType: ???
+    }
+
+    typeReference {
+        nameOfReferred: string
+        kindOfReferredType: ???
+    }
+
+    map {
+        keyName: string
+        valueType: Type
+    }
+
+    unknown {}
+
+}
+
+
+hierarchy Selection as-postfix {
+
+    direct {
+    }
+
+    all {
+        alias: string
+    }
+
+}
+
