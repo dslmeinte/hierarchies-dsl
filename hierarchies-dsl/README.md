@@ -10,6 +10,7 @@ Note:
 
 * DSL prose is stored in JSON format.
 * Assume each DSL JSON file "is its own universe", together with what's available as direct TypeScript types.
+* Generate code (TypeScript, JSON Schema, etc.) through *customisable* (e.g. through overridable) templates - e.g. using Mustache for text, plain JS objects for JSON Schema.
 * We might want to have postfix opt-in *per sub type*.
 * It might not be the best idea to define completely hierarchies inclusively.
     Maybe work from inheritance instead, and have flags to infer tags and values.

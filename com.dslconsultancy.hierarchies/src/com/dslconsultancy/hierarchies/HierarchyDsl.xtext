@@ -18,9 +18,9 @@ Hierarchy:
 
 	
 SubType:
-	(abstract ?= 'abstract')? name=ID ('<' superType=[SubType])? '{'
+	(abstract ?= 'abstract')? name=ID ('<' superType=[SubType])? ('{'
 		properties += Property*
-	'}'
+	'}')?
 	;
 
 

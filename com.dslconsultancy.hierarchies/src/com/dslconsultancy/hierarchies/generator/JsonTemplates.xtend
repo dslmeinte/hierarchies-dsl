@@ -23,14 +23,16 @@ class JsonTemplates {
 			.set("hierarchies", newArray.addAll(hierarchies.map[asJson]))
 	}
 
-	def asJson(Hierarchy it) {
+	private def asJson(Hierarchy it) {
 		newObject
 			.put("name", name)
-			.put("asPostfix", asPostfix)
-			.set("baseProperties", newArray.addAll(baseProperties.map[asJson]))
+			.put("asPostfix", asPostfix) => [ o |
+				o.set("baseProperties", newArray.addAll(baseProperties.map[asJson]));
+				o.set("subTypes", newArray.addAll(subTypes.map[asJson]))
+			]
 	}
 
-	def asJson(SubType it) {
+	private def asJson(SubType it) {
 		((newObject
 			.put("name", name)
 			.put("abstract", abstract)) => [ json |
@@ -41,13 +43,13 @@ class JsonTemplates {
 			.set("properties", newArray.addAll(properties.map[asJson]))
 	}
 
-	def asJson(Property it) {
+	private def asJson(Property it) {
 		newObject
 			.put("name", name)
 			.set("type", type.asJson)
 	}
 
-	def ObjectNode asJson(Type it) {
+	private def ObjectNode asJson(Type it) {
 		(newObject
 			.put("$type", eClass.name)) => [ json |
 				switch it {
