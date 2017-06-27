@@ -25,7 +25,7 @@ SubType:
 
 
 Property:
-	name=ID ':' type=Type
+	name=ID (optional ?= '?')? ':' type=Type
 	;
 
 

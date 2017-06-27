@@ -71,7 +71,7 @@ class TypeScriptTemplates {
 
 	private def asTypeScript(Property it)
 		'''
-		«name»: «type.asTypeScript»;
+		«name»«IF optional»?«ENDIF»: «type.asTypeScript»;
 		'''
 
 

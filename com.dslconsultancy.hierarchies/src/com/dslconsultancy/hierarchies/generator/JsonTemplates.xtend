@@ -46,6 +46,7 @@ class JsonTemplates {
 	private def asJson(Property it) {
 		newObject
 			.put("name", name)
+			.put("optional", optional)
 			.set("type", type.asJson)
 	}
 
