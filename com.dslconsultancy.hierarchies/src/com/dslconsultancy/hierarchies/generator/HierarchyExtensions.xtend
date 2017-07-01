@@ -29,6 +29,10 @@ class HierarchyExtensions {
 		name.toFirstUpper
 	}
 
+	def requiresBaseType(Hierarchy it) {
+		!(baseProperties.empty && noBaseType)
+	}
+
 
 	def hierarchy(SubType it) {
 		eContainer as Hierarchy

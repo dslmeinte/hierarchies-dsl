@@ -41,12 +41,14 @@ class TypeScriptTemplates {
 
 		export type «typeName» = «concreteSubs.map['''I«postfixedName»'''].join("\n\t| ")»;
 
-		export /* abstract */ interface I«typeName» {
-			«discriminatorPropertyName»: «discriminatorTypeName»;
-			«FOR property : baseProperties»
-				«property.asTypeScript»
-			«ENDFOR»
-		}
+		«IF requiresBaseType»
+			export /* abstract */ interface I«typeName» {
+				«discriminatorPropertyName»: «discriminatorTypeName»;
+				«FOR property : baseProperties»
+					«property.asTypeScript»
+				«ENDFOR»
+			}
+		«ENDIF»
 
 		«FOR it : subTypes.sortBy[name]»
 			«asTypeScript»
@@ -58,7 +60,7 @@ class TypeScriptTemplates {
 
 	private def asTypeScript(SubType it)
 		'''
-		export «IF abstract»/* abstract */ «ENDIF»interface I«postfixedName» extends I«IF superType === null»«hierarchy.typeName»«ELSE»«superType.postfixedName»«ENDIF» {
+		export «IF abstract»/* abstract */ «ENDIF»interface I«postfixedName»«extendsClause» {
 			«IF !abstract»
 				«hierarchy.discriminatorPropertyName»: "«discriminatorPropertyValue»";
 			«ENDIF»
@@ -68,6 +70,17 @@ class TypeScriptTemplates {
 		}
 		'''
 
+	private def extendsClause(SubType it) {
+		if (superType === null) {
+			if (hierarchy.requiresBaseType) {
+				''' extends I«hierarchy.typeName»'''
+			} else {
+				""
+			}
+		} else {
+			''' extends I«superType.postfixedName»'''
+		}
+	}
 
 	private def asTypeScript(Property it)
 		'''

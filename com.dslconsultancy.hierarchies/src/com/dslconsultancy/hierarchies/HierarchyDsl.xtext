@@ -10,7 +10,7 @@ DefinitionFile:
 
 
 Hierarchy:
-	'hierarchy' name=ID (asPostfix ?= 'as-postfix')? '{'
+	'hierarchy' name=ID ( (asPostfix ?= 'as-postfix')? & (noBaseType ?= 'no-base-type')? ) '{'
 		baseProperties += Property*
 		subTypes += SubType*
 	'}'
